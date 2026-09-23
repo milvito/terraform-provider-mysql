@@ -972,6 +972,9 @@ func createNewConnection(ctx context.Context, conf *MySQLConfiguration) (*DbConn
 	retryError := retry.RetryContext(ctx, conf.ConnectRetryTimeoutSec, func() *retry.RetryError {
 		db, err = sql.Open(driverName, conf.Config.FormatDSN())
 		if err != nil {
+			// Log every attempt, a retried error is otherwise invisible
+			// until the retry budget is spent.
+			log.Printf("[WARN] Could not open connection: %v", err)
 			if mysqlErrorNumber(err) != 0 || cloudsqlErrorNumber(err) != 0 || ctx.Err() != nil {
 				return retry.NonRetryableError(err)
 			}
@@ -980,6 +983,7 @@ func createNewConnection(ctx context.Context, conf *MySQLConfiguration) (*DbConn
 
 		err = db.PingContext(ctx)
 		if err != nil {
+			log.Printf("[WARN] Could not ping server: %v", err)
 			if mysqlErrorNumber(err) != 0 || cloudsqlErrorNumber(err) != 0 || ctx.Err() != nil {
 				return retry.NonRetryableError(err)
 			}
