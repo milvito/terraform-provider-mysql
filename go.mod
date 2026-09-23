@@ -3,6 +3,7 @@ module github.com/petoju/terraform-provider-mysql/v3
 go 1.25.8
 
 require (
+	cloud.google.com/go/auth v0.20.0
 	cloud.google.com/go/cloudsqlconn v1.22.0
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.22.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.14.0
@@ -26,7 +27,6 @@ require (
 )
 
 require (
-	cloud.google.com/go/auth v0.20.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
 	filippo.io/edwards25519 v1.2.0 // indirect
